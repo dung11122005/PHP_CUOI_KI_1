@@ -76,10 +76,9 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
-            // Thêm dòng này để tắt persistent connection:
-    'options' => [
-        \PDO::ATTR_PERSISTENT => false,
-    ],
+            'options' => [
+                PDO::ATTR_EMULATE_PREPARES => true,
+            ],
         ],
 
         'sqlsrv' => [
