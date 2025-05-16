@@ -13,6 +13,11 @@ class CartDetail extends Model
 
       public $timestamps = true; // Thêm dòng này
 
+      // CartDetail.php
+    protected $casts = [
+        'cartdetails_checkbox' => 'boolean',
+    ];
+
     public function cart()
     {
         return $this->belongsTo(Cart::class);
