@@ -34,4 +34,5 @@ EXPOSE ${PORT}
 
 # 7. Start Laravel với built-in server
 #    Render:        PORT=10000  ; Railway: PORT=3000
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT}"]
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
+
