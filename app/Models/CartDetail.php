@@ -9,7 +9,7 @@ class CartDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cartDetails_checkbox', 'cartDetails_quantity', 'product_id', 'cart_id'];
+    protected $fillable = ['cartdetails_checkbox', 'cartDetails_quantity', 'product_id', 'cart_id'];
 
       public $timestamps = true; // Thêm dòng này
 

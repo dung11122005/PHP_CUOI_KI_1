@@ -50,7 +50,7 @@ class OrderService
         }
 
         $cartDetails = $cart->cartDetails->filter(function ($cd) {
-            return $cd->cartDetails_checkbox != 0;
+            return $cd->cartdetails_checkbox != 0;
         });
 
         $totalPrice = $cartDetails->sum(function ($cd) {
@@ -80,7 +80,7 @@ class OrderService
 
     // Lưu chi tiết đơn hàng
     foreach ($cartDetails as $cartDetail) {
-        if ($cartDetail->cartDetails_checkbox == 1) {
+        if ($cartDetail->cartdetails_checkbox == 1) {
             OrderDetail::create([
                 'order_id' => $order->id,
                 'product_id' => $cartDetail->product_id,
@@ -96,7 +96,7 @@ class OrderService
     foreach ($cartIds as $cartId) {
         // Xóa các CartDetail có checkbox = 1
         CartDetail::where('cart_id', $cartId)
-            ->where('cartDetails_checkbox', 1)
+            ->where('cartdetails_checkbox', 1)
             ->delete();
 
         // Tính lại tổng số lượng loại sản phẩm còn lại trong giỏ hàng

@@ -40,14 +40,14 @@ class CartService
                         'cart_id' => $cart->id,
                         'product_id' => $product->id,
                         'cartDetails_quantity' => $quantity,
-                        'cartDetails_checkbox' => false,
+                        'cartdetails_checkbox' => false,
                     ]);
                     // Cập nhật tổng số lượng trong giỏ hàng
                     $cart->cart_sum += $quantity;
                     $cart->save();
                 } else {
                     // Cập nhật số lượng nếu sản phẩm đã có
-                    $cartDetail->cartDetails_quantity += $quantity;
+                    $cartDetail->cartdetails_quantity+= $quantity;
                     $cartDetail->save();
                 }
 
@@ -77,7 +77,7 @@ class CartService
 
         foreach ($cartDetails as $cd) {
             // Đặt checkbox về false
-            $cd->cartDetails_checkbox = false;
+            $cd->cartdetails_checkbox = false;
             $cd->save();
 
             // Tính tổng tiền
@@ -100,7 +100,7 @@ class CartService
         if ($currentCartDetail) {
             // Sử dụng setAttribute để gán giá trị cho đúng tên cột
             $currentCartDetail->setAttribute('cartDetails_quantity', $cartDetail['quantity']);
-            $currentCartDetail->setAttribute('cartDetails_checkbox', $cartDetail['checkbox'] ?? 0); // Mặc định là 0 nếu không được check
+            $currentCartDetail->setAttribute('cartdetails_checkbox', $cartDetail['checkbox'] ?? 0); // Mặc định là 0 nếu không được check
             
             $currentCartDetail->save();
         }
@@ -121,7 +121,7 @@ class CartService
 
 
         $cartDetails = $cart->cartDetails->filter(function ($cd) {
-            return $cd->cartDetails_checkbox != 0;
+            return $cd->cartdetails_checkbox != 0;
         });
 
         $totalPrice = $cartDetails->sum(function ($cd) {

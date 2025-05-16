@@ -131,7 +131,7 @@
                                 <div class="input-group quantity mt-4" style="width: 100px;">
 
                                     <input type="text" class="form-control form-control-sm text-center border-0"
-                                        value="{{ $cartDetail->cartDetails_quantity }}"
+                                        value="{{ $cartDetail->cartdetails_quantity}}"
                                         data-cart-detail-id="{{ $cartDetail->id }}"
                                         data-cart-detail-price="{{ $cartDetail->product->product_price }}"
                                         data-cart-detail-index="{{ $loop->index }}">
