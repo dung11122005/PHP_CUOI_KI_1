@@ -162,7 +162,7 @@
                             </td>
                             <td>
                                 <p class="mb-0 mt-4" data-cart-detail-id="{{ $cartDetail->id }}">
-                                    {{ number_format($cartDetail->product->product_price * $cartDetail->cartDetails_quantity) }}
+                                    {{ number_format($cartDetail->product->product_price * $cartDetail->cartdetails_quantity) }}
                                     đ
                                 </p>
                             </td>

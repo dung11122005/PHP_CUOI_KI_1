@@ -54,7 +54,7 @@ class OrderService
         });
 
         $totalPrice = $cartDetails->sum(function ($cd) {
-            return $cd->product->product_price * $cd->cartDetails_quantity;
+            return $cd->product->product_price * $cd->cartdetails_quantity;
         });
 
         return [
@@ -84,7 +84,7 @@ class OrderService
             OrderDetail::create([
                 'order_id' => $order->id,
                 'product_id' => $cartDetail->product_id,
-                'quantity' => $cartDetail->cartDetails_quantity,
+                'quantity' => $cartDetail->cartdetails_quantity,
                 'price' => $cartDetail->product->product_price,
                 'payment_method' => $data['paymentMethod'],
             ]);

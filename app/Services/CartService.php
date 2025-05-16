@@ -39,7 +39,7 @@ class CartService
                     CartDetail::create([
                         'cart_id' => $cart->id,
                         'product_id' => $product->id,
-                        'cartDetails_quantity' => $quantity,
+                        'cartdetails_quantity' => $quantity,
                         'cartdetails_checkbox' => false,
                     ]);
                     // Cập nhật tổng số lượng trong giỏ hàng
@@ -81,7 +81,7 @@ class CartService
             $cd->save();
 
             // Tính tổng tiền
-            $totalPrice += $cd->product->product_price * $cd->cartDetails_quantity;
+            $totalPrice += $cd->product->product_price * $cd->cartdetails_quantity;
         }
 
         return [
@@ -99,7 +99,7 @@ class CartService
 
         if ($currentCartDetail) {
             // Sử dụng setAttribute để gán giá trị cho đúng tên cột
-            $currentCartDetail->setAttribute('cartDetails_quantity', $cartDetail['quantity']);
+            $currentCartDetail->setAttribute('cartdetails_quantity', $cartDetail['quantity']);
             $currentCartDetail->setAttribute('cartdetails_checkbox', $cartDetail['checkbox'] ?? 0); // Mặc định là 0 nếu không được check
             
             $currentCartDetail->save();
@@ -125,7 +125,7 @@ class CartService
         });
 
         $totalPrice = $cartDetails->sum(function ($cd) {
-            return $cd->product->product_price * $cd->cartDetails_quantity;
+            return $cd->product->product_price * $cd->cartdetails_quantity;
         });
 
         return [

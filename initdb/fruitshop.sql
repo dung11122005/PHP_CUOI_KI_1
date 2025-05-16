@@ -14,14 +14,14 @@ INSERT INTO `carts` (`id`, `cart_sum`, `user_id`, `created_at`, `updated_at`) VA
 CREATE TABLE `cart_details` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `cartdetails_checkbox` tinyint(1) NOT NULL DEFAULT 0,
-  `cartDetails_quantity` bigint(20) NOT NULL,
+  `cartdetails_quantity` bigint(20) NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
   `cart_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `cart_details` (`id`, `cartdetails_checkbox`, `cartDetails_quantity`, `product_id`, `cart_id`, `created_at`, `updated_at`) VALUES
+INSERT INTO `cart_details` (`id`, `cartdetails_checkbox`, `cartdetails_quantity`, `product_id`, `cart_id`, `created_at`, `updated_at`) VALUES
 (39, 0, 1, 2, 24, '2025-04-15 19:44:41', '2025-04-17 03:40:30'),
 (40, 0, 1, 3, 24, '2025-04-15 19:44:43', '2025-04-17 03:40:30');
 

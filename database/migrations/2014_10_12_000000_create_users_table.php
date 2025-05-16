@@ -115,7 +115,7 @@ return new class extends Migration
         Schema::create('cart_details', function (Blueprint $table) {
             $table->id();
             $table->boolean('cartdetails_checkbox')->default(false);
-            $table->bigInteger('cartDetails_quantity');
+            $table->bigInteger('cartdetails_quantity');
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('cart_id')->constrained('cart');
         });
