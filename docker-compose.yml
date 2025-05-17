@@ -20,6 +20,7 @@ services:
       - ./storage/app/public:/var/www/storage/app/public
       - ./storage/app/public/products:/var/www/storage/app/public/products
       - ./storage/app/public/avatars:/var/www/storage/app/public/avatars
+      - ./storage/framework/sessions:/var/www/storage/framework/sessions'
     env_file:
       - .env # Docker tự load biến môi trường từ .env
     depends_on:
