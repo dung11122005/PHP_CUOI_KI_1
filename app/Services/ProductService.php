@@ -12,21 +12,26 @@ use Illuminate\Support\Facades\Storage;
 class ProductService
 {
 
+    // Phương thức để lấy tổng số sản phẩm
+    public function getAllProductCount()
+    {
+        return Product::count();
+    }
 
-    public function getAllProduct($perPage = 8)
+    public function getAllProduct()
+    {
+        return Product::paginate(8);
+    }
+    public function getAllProducts($perPage = 10)
     {
         return Product::paginate($perPage);
     }
 
-    public function getAllProductShowPage($perPage = 9)
+    public function searchProduct($query, $perPage = 10)
     {
-        return Product::paginate($perPage);
+        return Product::where('product_name', 'like', '%' . $query . '%')->paginate($perPage);
     }
 
-    public function getAllProducts()
-    {
-        return Product::all();
-    }
 
     public function getReviewWithIDProduct($ProductId)
     {
@@ -168,7 +173,7 @@ class ProductService
 
         // Lọc theo đánh giá
         if (!empty($filters['valueStar'])) {
-            $query->where('valueStar', '>=', $filters['valueStar']);
+            $query->where('star', '>=', $filters['valueStar']);
         }
 
         // Sắp xếp

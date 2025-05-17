@@ -15,9 +15,15 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
-        $users = $this->userService->getAllUsers();
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $users = $this->userService->searchUsers($search);
+        } else {
+            $users = $this->userService->getAllUsers();
+        }
+        // $users = $this->userService->getAllUsers();
         return view('admin.users.show', compact('users'));
     }
 

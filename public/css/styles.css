@@ -2911,6 +2911,14 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: #198754;
 }
 
+btn-success:hover {
+  background-color: #157347; /* màu xanh lá đậm */
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(25, 135, 84, 0.35);
+}
+
+
 .btn-info {
   --bs-btn-color: #000;
   --bs-btn-bg: #0dcaf0;
@@ -2945,6 +2953,14 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: #ffc107;
 }
 
+a.btn-warning:hover {
+  background-color: #f9d423; /* vàng tươi hơn nhẹ */
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(249, 212, 35, 0.35);
+}
+
+
 .btn-danger {
   --bs-btn-color: #fff;
   --bs-btn-bg: #dc3545;
@@ -2960,6 +2976,13 @@ textarea.form-control-lg {
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: #dc3545;
   --bs-btn-disabled-border-color: #dc3545;
+}
+
+a.btn-danger:hover {
+  background-color: #e74c3c; /* đỏ tươi */
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(231, 76, 60, 0.35);
 }
 
 .btn-light {

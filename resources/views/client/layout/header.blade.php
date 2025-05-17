@@ -75,6 +75,9 @@
                                 </li>
                                 <li><a class="dropdown-item" href="/user-profile">Quản lý tài khoản</a></li>
                                 <li><a class="dropdown-item" href="/order-history">Lịch sử mua hàng</a></li>
+                                @if(session('role_id') == 1)
+                                <li><a class="dropdown-item" href="/admin">Trang admin</a></li>
+                                @endif
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

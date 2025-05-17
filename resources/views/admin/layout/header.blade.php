@@ -1,7 +1,7 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="/admin">Start Bootstrap</a>
+        <a class="navbar-brand ps-3" href="/">Fruitables</a>
         <!-- Sidebar Toggle (Nằm bên trái) -->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-auto" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i>

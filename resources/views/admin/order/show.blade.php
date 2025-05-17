@@ -23,7 +23,14 @@
                 <div class="row">
                     <div class="col-11 mx-auto">
                         <div class="d-flex justify-content-between">
-                            <h3>Table order</h3>
+                            <a href="/admin/order" class="text-decoration-none text-dark">
+                                <h3 class="fw-bold">Table Order</h3>
+                            </a>
+                            <form method="GET" action="{{ route('admin.orders') }}" class="d-flex gap-2 w-50 justify-content-between">
+                                <input type="text" name="search" value="{{ request()->input('search') }}"
+                                    class="form-control w-75 h-100 " placeholder="Tìm theo tên người đặt hàng hoặc theo mã đặt hàng..." />
+                                <button type="submit" class="btn btn-primary ml-auto ">Tìm kiếm</button>
+                            </form>
 
                         </div>
                         <hr />
@@ -89,7 +96,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    {{ $orders->links('pagination::bootstrap-4') }}
+                    {{ $orders->appends(['search' => request()->input('search')])->links('pagination::bootstrap-4') }}
                 </div>
             </div>
 

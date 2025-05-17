@@ -24,8 +24,14 @@ class OrderController extends Controller
 
 
 
-    public function getAllOrder(){
-        $orders = $this->orderService->getAllOrder();
+    public function getAllOrder(Request $request){
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $orders = $this->orderService->searchOrders($search);
+        } else {
+            $orders = $this->orderService->getAllOrder();
+        }
+
         return view('admin.order.show', compact('orders'));
     }
 
@@ -176,4 +182,17 @@ class OrderController extends Controller
 
     }
 
+    public function track(Request $request)
+    {
+        $order_id = $request->id;
+
+        // Tìm đơn hàng theo mã (order_code)
+        $order = $this->orderService->getOrderById($order_id);
+
+        if (!$order) {
+            return view('client.cart.track', ['error' => 'Không tìm thấy đơn hàng.']);
+        }
+
+        return view('client.cart.track', compact('order'));
+    }
 }

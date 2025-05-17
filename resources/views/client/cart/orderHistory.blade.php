@@ -100,6 +100,7 @@
                             <th scope="col">Giá cả</th>
                             <th scope="col">Số lượng</th>
                             <th scope="col">Thành tiền</th>
+                            <th scope="col">Trạng thái</th>
                             <!-- <th scope="col">Trạng thái</th> -->
                         </tr>
                     </thead>
@@ -154,10 +155,13 @@
                                     {{ number_format($orderDetail->price * $orderDetail->quantity, 0, ',', '.') }} đ
                                 </p>
                             </td>
-                            <!-- <td>
-                                {{-- Trạng thái đơn hàng nếu có --}}
-                                {{ $order->status ?? 'Chờ xử lý' }}
-                            </td> -->
+                             <td>
+                                <p class="mb-0 mt-4">
+                                    <a href="{{ route('track', ['id' => $order->id]) }}" target="_blank">
+                                        {{ $order->order_status }}
+                                    </a>
+                                </p>
+                            </td>
                         </tr>
                         @endforeach
                         @endforeach

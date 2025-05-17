@@ -14,6 +14,19 @@ class UserService
         return User::paginate($perPage);
     }
 
+    public function searchUsers($searchTerm, $perPage = 10)
+    {
+        return User::where('user_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('user_email', 'like', '%' . $searchTerm . '%')
+            ->orWhere('user_phone', 'like', '%' . $searchTerm . '%')
+            ->paginate($perPage);
+    }
+    // Phương thức để lấy tổng số người dùng
+    public function getAllUserCount()
+    {
+        return User::count();
+    }
+
 
     public function getUserById($id)
     {

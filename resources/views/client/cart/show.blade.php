@@ -7,8 +7,9 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-    <meta name="_csrf" content="{{ csrf_token() }}">
     <meta name="_csrf_header" content="X-CSRF-TOKEN">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +20,7 @@
 
     <!--Sử dụng thư viện jQuery Toast:-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 
     <!-- Icon Font Stylesheet -->
@@ -63,7 +65,6 @@
     }
     </style>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function() {
         // Sự kiện thay đổi của checkbox bên ngoài
@@ -118,7 +119,7 @@
                         <p>Giỏ hàng trống!</p>
                         @else
                         @foreach ($cartDetails as $cartDetail)
-                        <tr>
+                        <tr id = "cartItem{{$cartDetail->id }}">
                             <th class="orderCart" style="display: flex; align-items: center; gap: 15px;" scope="row">
                                 <input class="form-check-input external-checkbox" type="checkbox"
                                     data-cart-detail-index="{{ $loop->index }}">
@@ -142,41 +143,56 @@
                                 </p>
                             </td>
                             <td>
+                                <div id="cart" data-url="{{ route('cart.updateQuantityAjax') }}"></div>
                                 <div class="input-group quantity mt-4" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border"
+                                            data-id="{{ $cartDetail->id }}">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
+<<<<<<< HEAD
                                     <input type="text" class="form-control form-control-sm text-center border-0"
                                         value="{{ $cartDetail->cartdetails_quantity}}"
+=======
+                                    <input type="text" class="form-control form-control-sm text-center border-0 cart-qty-input"
+                                        value="{{ $cartDetail->cartDetails_quantity }}"
+>>>>>>> 4177f0ff6ce4950c07bd97600bf298acdacbc2f3
                                         data-cart-detail-id="{{ $cartDetail->id }}"
                                         data-cart-detail-price="{{ $cartDetail->product->product_price }}"
                                         data-cart-detail-index="{{ $loop->index }}">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border"
+                                            data-id="{{ $cartDetail->id }}">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
                             <td>
+<<<<<<< HEAD
                                 <p class="mb-0 mt-4" data-cart-detail-id="{{ $cartDetail->id }}">
                                     {{ number_format($cartDetail->product->product_price * $cartDetail->cartdetails_quantity) }}
+=======
+                                <p class="mb-0 mt-4 total-price" data-cart-detail-id="{{ $cartDetail->id }}">
+                                    {{ number_format($cartDetail->product->product_price * $cartDetail->cartDetails_quantity) }}
+>>>>>>> 4177f0ff6ce4950c07bd97600bf298acdacbc2f3
                                     đ
                                 </p>
                             </td>
                             <td>
-                                <form method="post" action="/delete-cart-product/{{ $cartDetail->id }}">
+                                <form method="POST" id="deleteCartForm{{ $cartDetail->id }}">
                                     @csrf
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-deleteCartDetail btn-md rounded-circle bg-light border mt-4" id="{{ $cartDetail->id }}">
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
                                 </form>
+                                
                             </td>
                         </tr>
                         @endforeach
-                        <p>Tổng tiền: {{ number_format($totalPrice) }} VND</p>
+                       <p>Tổng tiền: <p class = "totalPrice" >{{ number_format($totalPrice) }} VND</p></p>
                         @endif
                     </tbody>
 
@@ -201,7 +217,7 @@
                             <h1 class="display-6 mb-4">Thông Tin <span class="fw-normal">Đơn Hàng</span></h1>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Tạm tính:</h5>
-                                <p class="mb-0" data-cart-total-price="{{ $totalPrice }}">
+                                <p class="mb-0 totalPrice" data-cart-total-price="{{ $totalPrice }}">
                                     {{ number_format($totalPrice) }} đ
                                 </p>
                             </div>
@@ -215,12 +231,13 @@
 
                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                             <h5 class="mb-0 ps-4 me-4">Tổng số tiền</h5>
-                            <p class="mb-0 pe-4" data-cart-total-price="{{ $totalPrice }}">
+                            
+                            <p class="mb-0 pe-4 totalPrice" data-cart-total-price="{{ $totalPrice }}">
                                 {{ number_format($totalPrice) }} đ
                             </p>
                         </div>
 
-                        <form action="{{ route('confirmCheckout') }}" method="POST">
+                        <form id="checkoutForm" action="{{ route('confirmCheckout') }}" method="POST">
                             @csrf
                             <div>
                                 @foreach ($cartDetails as $index => $cartDetail)
@@ -237,9 +254,15 @@
                                             value="{{ $cartDetail->cartdetails_quantity}}">
                                     </div>
                                     <input id="cartDetails{{ $loop->index }}-checkbox" value="1"
+<<<<<<< HEAD
                                         class="form-check-input internal-checkbox" type="checkbox"
                                         name="cartDetails[{{ $loop->index }}][checkbox]" value="1"
                                         {{ $cartDetail->cartdetails_checkbox ? 'checked' : '' }}>
+=======
+                                        class="form-check-input internal-checkbox cart-checkbox" type="checkbox"
+                                        name="cartDetails[{{ $loop->index }}][checkbox]" 
+                                        {{ $cartDetail->cartDetails_checkbox ? 'checked' : '' }}>
+>>>>>>> 4177f0ff6ce4950c07bd97600bf298acdacbc2f3
                                 </div>
                                 @endforeach
                             </div>
@@ -247,6 +270,7 @@
                                 class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">
                                 Xác nhận đặt hàng
                             </button>
+                            <div id="checkbox-error" style="display: none; color: red; font-weight: bold;"></div>
                         </form>
                     </div>
                 </div>
@@ -270,7 +294,6 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>

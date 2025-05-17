@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +15,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
         rel="stylesheet">
-
+    <!--Sử dụng thư viện jQuery Toast:-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -328,16 +332,7 @@
                                             <div class="d-flex justify-content-between flex-lg-wrap">
                                                 <p class="text-dark fs-5 fw-bold mb-0">
                                                     {{ number_format($product->product_price, 0, ',', '.') }} đ</p>
-                                                <form class="add-to-cart-form"
-                                                    action="/add-product-to-cart/{{ $product->id }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                    <input type="hidden" name="quantity" value="1">
-                                                    <button type="submit"
-                                                        class="btn btn-primary border-0 rounded-pill px-4 py-2 text-white w-100">
-                                                        <i class="fa fa-shopping-bag me-2"></i> Add to cart
-                                                    </button>
-                                                </form>
+                                                    <x-add-to-cart-button :product-id="$product->id" />
                                             </div>
                                         </div>
                                     </div>
@@ -369,7 +364,6 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
@@ -377,6 +371,8 @@
     <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <!-- Template Javascript -->
     <script src="{{ asset('js/main.js') }}"></script>
+    
 </body>
+
 
 </html>

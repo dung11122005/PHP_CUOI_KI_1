@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +16,10 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
         rel="stylesheet">
 
+    <!--Sử dụng thư viện jQuery Toast:-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -75,29 +80,40 @@
                             <p class="mb-3">{{ $product->product_shortDesc }}</p>
                             <h5 class="fw-bold mb-3">{{ number_format($product->product_price, 0, ',', '.') }} đ</h5>
                             <div class="d-flex mb-4">
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star"></i>
+                                
+                                    @for ($i = 1; $i <= 5; $i++) <i
+                                        class="fa fa-star {{ $i <= $product->star ? 'text-secondary' : 'text-muted' }}">
+                                        </i>
+                                        @endfor
+                                
                             </div>
                             <p class="mb-4">{{ $product->product_detailDesc }}.</p>
 
-                            <div class="input-group quantity mb-5" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
+                            
+                            <form class="add-to-cart-form" id="addToCartForm">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                {{-- <input type="hidden" name="quantity" value="1"> --}}
+                                <div class="input-group quantity mb-5" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" name="quantity"
+                                        class="form-control form-control-sm text-center border-0" value="1"
+                                        id="quantityInput">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0" value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                <button type="button"
+                                    class="btnAddToCartHomepage btn btn-primary border-0 rounded-pill px-4 py-2 text-white w-100">
+                                    <i class="fa fa-shopping-bag me-2"></i> Add to cart
+                                </button>
+                            </form>
                         </div>
                         <div class="col-lg-12">
                             <nav>
@@ -114,37 +130,37 @@
                                 <div class="tab-pane" id="nav-mission" role="tabpanel"
                                     aria-labelledby="nav-mission-tab">
                                     @foreach ($reviews as $review)
-                                    <div class="d-flex">
-                                        <img src="{{ asset('storage/avatars/' . $review->user->user_avatar) }}"
-                                            class="img-fluid rounded-circle p-3"
-                                            style="width: 100px; height: 100px; object-fit: cover;" alt="" o>
-                                        <div class="">
-                                            <p class="mb-2" style="font-size: 14px;">cảm ơn bình luận của bạn</p>
-                                            <div class="d-flex justify-content-between">
-                                                <h5 style="margin-right: 5px;">{{ $review->user->user_name }}</h5>
-                                                {{-- Hiển thị sao đánh giá --}}
-                                                <label class="form-check-label">
-                                                    @for ($i = 1; $i <= 5; $i++) <i
-                                                        class="fa fa-star {{ $i <= $review->rating ? 'text-secondary' : 'text-muted' }}">
-                                                        </i>
+                                        <div class="d-flex">
+                                            <img src="{{ asset('storage/avatars/' . $review->user->user_avatar) }}"
+                                                class="img-fluid rounded-circle p-3"
+                                                style="width: 100px; height: 100px; object-fit: cover;" alt="" o>
+                                            <div class="">
+                                                <p class="mb-2" style="font-size: 14px;">cảm ơn bình luận của bạn</p>
+                                                <div class="d-flex justify-content-between">
+                                                    <h5 style="margin-right: 5px;">{{ $review->user->user_name }}</h5>
+                                                    {{-- Hiển thị sao đánh giá --}}
+                                                    <label class="form-check-label">
+                                                        @for ($i = 1; $i <= 5; $i++) <i
+                                                                class="fa fa-star {{ $i <= $review->rating ? 'text-secondary' : 'text-muted' }}">
+                                                            </i>
                                                         @endfor
-                                                </label>
+                                                    </label>
 
-                                                {{-- Chỉ admin (role_id = 1) mới thấy nút xoá --}}
-                                                @if (session('role_id') == 1)
-                                                <form action="/review/delete/{{ $review->id }}" method="POST"
-                                                    class="ms-3">
-                                                    @csrf
-                                                    <input style="display: none;" type="hidden" name="productId"
-                                                        value="{{$product->id }}">
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Bạn có chắc muốn xóa bình luận này không?')">Xóa</button>
-                                                </form>
-                                                @endif
+                                                    {{-- Chỉ admin (role_id = 1) mới thấy nút xoá --}}
+                                                    @if (session('role_id') == 1)
+                                                        <form action="/review/delete/{{ $review->id }}" method="POST"
+                                                            class="ms-3">
+                                                            @csrf
+                                                            <input style="display: none;" type="hidden" name="productId"
+                                                                value="{{$product->id }}">
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Bạn có chắc muốn xóa bình luận này không?')">Xóa</button>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                                <p class="text-dark">{{ $review->comment }} </p>
                                             </div>
-                                            <p class="text-dark">{{ $review->comment }} </p>
                                         </div>
-                                    </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -226,36 +242,37 @@
                             <p style="color: red; font-size: 16px;">Sản phẩm chỉ được giảm giá khi mua trực tiếp tại
                                 cửa hàng</p>
                             @foreach ($productDiscounts as $productDiscount)
-                            <div class="d-flex align-items-center justify-content-start">
-                                <div class="rounded position-relative" style="width: 100px; height: 100px;">
-                                    <img src="{{ asset('storage/products/' . $productDiscount->product->product_image_url) }}"
-                                        class="img-fluid rounded" alt="Image">
-                                    <span style="font-size: 14px;"
-                                        class="badge bg-danger position-absolute top-0 start-0 m-1">
-                                        -{{ $productDiscount->discount_percent }}%
-                                    </span>
-                                </div>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <div class="rounded position-relative" style="width: 100px; height: 100px;">
+                                        <img src="{{ asset('storage/products/' . $productDiscount->product->product_image_url) }}"
+                                            class="img-fluid rounded" alt="Image">
+                                        <span style="font-size: 14px;"
+                                            class="badge bg-danger position-absolute top-0 start-0 m-1">
+                                            -{{ $productDiscount->discount_percent }}%
+                                        </span>
+                                    </div>
 
-                                <div style="margin-left: 10px;">
-                                    <h6 class="mb-2">{{ $productDiscount->product->product_name }}</h6>
-                                    <div class="d-flex mb-2">
-                                        @for ($i = 1; $i <= 5; $i++) <i
-                                            class="fa fa-star {{ $i <= $productDiscount->product->star ? 'text-secondary' : 'text-muted' }}">
-                                            </i>
+                                    <div style="margin-left: 10px;">
+                                        <h6 class="mb-2">{{ $productDiscount->product->product_name }}</h6>
+                                        <div class="d-flex mb-2">
+                                            @for ($i = 1; $i <= 5; $i++) <i
+                                                    class="fa fa-star {{ $i <= $productDiscount->product->star ? 'text-secondary' : 'text-muted' }}">
+                                                </i>
                                             @endfor
-                                    </div>
-                                    @php
-                                    $originalPrice = $productDiscount->product->product_price;
-                                    $discount = $productDiscount->discount_percent;
-                                    $finalPrice = $originalPrice - ($originalPrice * $discount / 100);
-                                    @endphp
-                                    <div class="d-flex mb-2">
-                                        <h5 class="fw-bold me-2">{{ number_format($finalPrice, 0, ',', '.') }}₫</h5>
-                                        <h5 class="text-danger text-decoration-line-through">
-                                            {{ number_format($originalPrice, 0, ',', '.') }}₫</h5>
+                                        </div>
+                                        @php
+                                            $originalPrice = $productDiscount->product->product_price;
+                                            $discount = $productDiscount->discount_percent;
+                                            $finalPrice = $originalPrice - ($originalPrice * $discount / 100);
+                                        @endphp
+                                        <div class="d-flex mb-2">
+                                            <h5 class="fw-bold me-2">{{ number_format($finalPrice, 0, ',', '.') }}₫</h5>
+                                            <h5 class="text-danger text-decoration-line-through">
+                                                {{ number_format($originalPrice, 0, ',', '.') }}₫
+                                            </h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             @endforeach
                             <div class="d-flex justify-content-center my-4">
                                 <a href="#"
@@ -270,34 +287,26 @@
             <div class="vesitable">
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     @foreach ($allproduct as $product)
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('storage/products/' . $product->product_image_url) }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Vegetable</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4><a href="/product/{{ $product->id }}" class="text-decoration-none text-dark">
-                                    {{ $product->product_name }}
-                                </a></h4>
-                            <p>{{  $product->product_shortDesc }}</p>
-                            <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="text-dark fs-5 fw-bold">
-                                    {{ number_format($product->product_price, 0, ',', '.') }} đ</p>
-                                <form class="add-to-cart-form" action="/add-product-to-cart/{{ $product->id }}"
-                                    method="POST">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit"
-                                        class="btn btn-primary border-0 rounded-pill px-4 py-2 text-white w-100">
-                                        <i class="fa fa-shopping-bag me-2"></i> Add to cart
-                                    </button>
-                                </form>
+                        <div class="border border-primary rounded position-relative vesitable-item">
+                            <div class="vesitable-img">
+                                <img src="{{ asset('storage/products/' . $product->product_image_url) }}"
+                                    class="img-fluid w-100 rounded-top" alt="">
+                            </div>
+                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                                style="top: 10px; right: 10px;">Vegetable</div>
+                            <div class="p-4 pb-0 rounded-bottom">
+                                <h4><a href="/product/{{ $product->id }}" class="text-decoration-none text-dark">
+                                        {{ $product->product_name }}
+                                    </a></h4>
+                                <p>{{  $product->product_shortDesc }}</p>
+                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                    <p class="text-dark fs-5 fw-bold">
+                                        {{ number_format($product->product_price, 0, ',', '.') }} đ
+                                    </p>
+                                    <x-add-to-cart-button :product-id="$product->id" />
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>
@@ -316,7 +325,6 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
@@ -324,19 +332,20 @@
     <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <!-- Template Javascript -->
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/product-details.js') }}"></script>
     <script>
-    $(document).ready(function() {
-        $('form').on('submit', function(e) {
-            // Lấy giá trị radio được chọn
-            let rating = $('input[name="radio-sort"]:checked').val();
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                // Lấy giá trị radio được chọn
+                let rating = $('input[name="radio-sort"]:checked').val();
 
-            // Gán vào input hidden
-            $('#rating-hidden').val(rating);
+                // Gán vào input hidden
+                $('#rating-hidden').val(rating);
 
-            // (Tùy chọn) Debug thử
-            console.log("Đánh giá được chọn là: " + rating);
+                // (Tùy chọn) Debug thử
+                console.log("Đánh giá được chọn là: " + rating);
+            });
         });
-    });
     </script>
 </body>
 

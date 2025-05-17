@@ -13,13 +13,16 @@ class ProductController extends Controller{
         $this->discountService = $discountService;
     }
 
-    public function getAllProduct()
+    public function getAllProduct(Request $request)
     {
-        $products = $this->productService->getAllProduct();
+        $query = $request->input('search');
+        if ($query) {
+            $products = $this->productService->searchProduct($query);
+        } else {
+            $products = $this->productService->getAllProducts();
+        }
         return view('admin.products.show', compact('products'));
     }
-
-    
 
     // Hiển thị form tạo sản phẩm
     public function createProduct()
@@ -42,8 +45,6 @@ class ProductController extends Controller{
         
     }
 
-    
-
     public function getProductDetailPage($id){
         $product = $this->productService->getProductById($id);
         $reviews = $this->productService->getReviewWithIDProduct($id);
@@ -51,13 +52,6 @@ class ProductController extends Controller{
         $productDiscounts = $this->discountService->getAllProductDiscountActive();
         return view('client.product.detail', compact('product','allproduct', 'reviews', 'productDiscounts' ));
     }
-
-
-    public function getProductShowPage(){
-        $allproduct= $this->productService->getAllProductShowPage();
-        return view('client.product.show', compact('allproduct',));
-    }
-
 
     // Xử lý tạo sản phẩm
     public function handleCreateProduct(Request $request)

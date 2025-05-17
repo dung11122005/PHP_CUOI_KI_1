@@ -140,7 +140,7 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <input type="text" class="form-control" name="user_phone"
-                                            value="{{ $user->user_phone}}">
+                                            placeholder="Phone number" value="{{ $user->user_phone}}">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="avatarFile" class="form-label">Avatar:</label>

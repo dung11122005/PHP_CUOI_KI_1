@@ -88,7 +88,7 @@
                     <i style="font-size: 120px;" class="far fa-smile"></i>
                     <h1 class="display-3">Đặt hàng thành công</h1>
                     <h1 class="mb-4">Cảm ơn bạn đã mua hàng</h1>
-                    <p class="mb-4">Laptopshop - Uy tín - chất lượng</p>
+                    <p class="mb-4">Fruitables - Uy tín - chất lượng</p>
                     <a class="btn border-secondary rounded-pill py-3 px-5" href="/">Go Back To Home</a>
                 </div>
             </div>
@@ -102,22 +102,11 @@
                 <div class="col-md-6 col-lg-3">
                     <div class="featurs-item text-center rounded bg-light p-4">
                         <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                            <i style="color: rgb(4, 159, 255); font-size: 60px;" class="far fa-thumbs-up"></i>
+                            <i class="far fa-thumbs-up fa-3x text-primary"></i>
                         </div>
                         <div class="featurs-content text-center">
                             <h5>ĐẶT HÀNG THÀNH CÔNG</h5>
                             <p class="mb-0">Đơn hàng sẽ sớm được xác nhận</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="featurs-item text-center rounded bg-light p-4">
-                        <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                            <i style="color: white; font-size: 60px;" class="far fa-calendar-check"></i>
-                        </div>
-                        <div class="featurs-content text-center">
-                            <h5>HÀNG ĐƯỢC XÁC NHẬN</h5>
-                            <p class="mb-0">Hàng đến tay bạn sau 5 - 7 ngày</p>
                         </div>
                     </div>
                 </div>
@@ -144,6 +133,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="featurs-item text-center rounded bg-light p-4">
+                        <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+                            <i style="color: white; font-size: 60px;" class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="featurs-content text-center">
+                            <h5>ĐƠN HÀNG ĐÃ HỦY</h5>
+                            <p class="mb-0">Liên hệ nếu gặp vấn đề</p>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         </div>

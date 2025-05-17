@@ -15,6 +15,51 @@ class OrderService
         return Order::paginate($perPage);
     }
 
+    public function searchOrders($searchTerm, $perPage = 10)
+    {
+        return Order::where('receiver_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('receiver_address', 'like', '%' . $searchTerm . '%')
+            ->orWhere('receiver_phone', 'like', '%' . $searchTerm . '%')
+            ->orWhere('id', 'like', '%' . $searchTerm . '%')
+            ->paginate($perPage);
+    }
+
+    // Phương thức để lấy tổng số đơn hàng
+    public function getAllOrderCount()
+    {
+        return Order::count();
+    }
+
+    // Lấy số lượng đơn hàng với trạng thái 'completed' cho từng tháng trong năm
+    public function getOrderCountByYear($year)
+    {
+        $orderCounts = [];
+        
+        for ($month = 1; $month <= 12; $month++) {
+            $orderCounts[$month] = Order::whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->where('order_status', 'complete')
+                ->count();
+        }
+
+        return $orderCounts;
+    }
+
+    //Thống kê doanh thu theo tháng trong năm
+    public function getRevenueByYear($year)
+    {
+        $revenues = array_fill(1, 12, 0);
+
+        for ($month = 1; $month <= 12; $month++) {
+            $revenues[$month] = Order::whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->where('order_status', 'complete')
+                ->sum('total_price');
+        }
+
+        return $revenues;
+    }
+
     public function getOrderById($id)
     {
          return Order::with('orderDetails')->find($id);
@@ -114,8 +159,5 @@ class OrderService
 
     return $order;
 }
-
-
-
 
 }

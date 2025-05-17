@@ -50,7 +50,7 @@ Route::middleware(['auth', 'role:1'])->group(function () {
 
     //User
 
-    Route::get('/admin/user', [UserController::class, 'getAllUsers']);
+    Route::get('/admin/user', [UserController::class, 'getAllUsers'])->name('admin.users');
 
     Route::get('/admin/user/{id}', [UserController::class, 'detailUser']);
 
@@ -65,9 +65,10 @@ Route::middleware(['auth', 'role:1'])->group(function () {
 
     //Product
 
-    Route::get('/admin/product', [ProductController::class, 'getAllProduct']);
+    Route::get('/admin/product', [ProductController::class, 'getAllProduct']) ->name('admin.products');
 
     Route::get('/admin/product/{id}', [ProductController::class, 'detailProduct']);
+
 
     Route::get('/admin/products/create', [ProductController::class, 'createProduct']);
     Route::post('/admin/product/create', [ProductController::class, 'handleCreateProduct']);
@@ -80,7 +81,7 @@ Route::middleware(['auth', 'role:1'])->group(function () {
 
     //order
 
-    Route::get('/admin/order', [OrderController::class, 'getAllOrder']);
+    Route::get('/admin/order', [OrderController::class, 'getAllOrder'])->name('admin.orders');
 
     Route::get('/admin/order/{id}', [OrderController::class, 'detailOrder']);
 
@@ -116,11 +117,18 @@ Route::post('/add-product-to-cart/{id}', [CartController::class, 'addProductToCa
 
 Route::post('/confirm-checkout', [CartController::class, 'postCheckOutPage'])->name('confirmCheckout');
 
+Route::delete('/delete-cart-product/{id}', [CartController::class, 'deleteProductFromCart'])->name('delete-cart-product');
+
+Route::post('/cart/update-quantity', [CartController::class, 'updateQuantityAjax'])->name('cart.updateQuantityAjax');
+
+
 Route::get('/checkout', [CartController::class, 'getCheckOutPage'])->name('checkout');
 
 Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('placeOrder');
 
 Route::get('/thank', [OrderController::class, 'thank'])->name('thank');
+
+Route::get('/track', [OrderController::class, 'track'])->name('track');
 
 Route::get('/order-history', [OrderController::class, 'getOrderHistory']);
 

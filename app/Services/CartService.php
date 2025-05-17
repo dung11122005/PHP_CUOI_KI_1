@@ -1,6 +1,7 @@
 <?php
 // app/Services/CartService.php
 namespace App\Services;
+
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\CartDetail;
@@ -91,20 +92,55 @@ class CartService
         ];
     }
 
-
+    public function handleRemoveProductFromCart($userId, $cartDetailId)
+    {
+        // Tìm giỏ hàng của người dùng
+        $cart = Cart::where('user_id', $userId)->first();
+    
+        if (!$cart) {
+            // Trả về lỗi nếu giỏ hàng không tồn tại
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Giỏ hàng không tồn tại.'
+            ], 404);  // Trả về mã lỗi 404 (Not Found)
+        }
+    
+        // Tìm chi tiết sản phẩm cần xóa trong giỏ hàng
+        $cartDetail = $cart->cartDetails()->where('id', $cartDetailId)->first();
+    
+        if (!$cartDetail) {
+            // Trả về lỗi nếu sản phẩm không có trong giỏ hàng
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sản phẩm không có trong giỏ hàng.'
+            ], 404);  // Trả về mã lỗi 404 (Not Found)
+        }
+    
+        // Xóa sản phẩm khỏi giỏ hàng
+        $cartDetail->delete();
+    
+        // Trả về thông báo thành công
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Xóa sản phẩm thành công.',
+        ]);
+    }
+    
     public function handleUpdateCartBeforeCheckout(array $cartDetails)
     {
         foreach ($cartDetails as $cartDetail) {
-        $currentCartDetail = CartDetail::find($cartDetail['id']);
+            $currentCartDetail = CartDetail::find($cartDetail['id']);
 
-        if ($currentCartDetail) {
-            // Sử dụng setAttribute để gán giá trị cho đúng tên cột
-            $currentCartDetail->setAttribute('cartdetails_quantity', $cartDetail['quantity']);
-            $currentCartDetail->setAttribute('cartdetails_checkbox', $cartDetail['checkbox'] ?? 0); // Mặc định là 0 nếu không được check
-            
-            $currentCartDetail->save();
+
+            if ($currentCartDetail) {
+                // Sử dụng setAttribute để gán giá trị cho đúng tên cột
+                $currentCartDetail->setAttribute('cartDetails_quantity', $cartDetail['quantity']);
+                $currentCartDetail->setAttribute('cartDetails_checkbox', $cartDetail['checkbox'] ?? 0); // Mặc định là 0 nếu không được check
+
+                $currentCartDetail->save();
+            }
+
         }
-    }
     }
 
     public function fetchCartByUser($userId)
@@ -118,8 +154,6 @@ class CartService
             ];
         }
 
-
-
         $cartDetails = $cart->cartDetails->filter(function ($cd) {
             return $cd->cartdetails_checkbox != 0;
         });
@@ -132,5 +166,34 @@ class CartService
             'cartDetails' => $cartDetails,
             'totalPrice' => $totalPrice
         ];
+    }
+
+    public function updateCartQuantity( $cartDetailID, $type, $userId)
+    {
+       // Tìm kiếm sản phẩm trong giỏ hàng của người dùng
+        $cartDetail = CartDetail::where('id', $cartDetailID)->first();
+
+        if ($cartDetail) {
+            // Cập nhật số lượng sản phẩm trong giỏ hàng
+            if ($type == 'increase') {
+                $cartDetail->cartDetails_quantity += 1;
+            } elseif ($type == 'decrease' && $cartDetail->cartDetails_quantity > 1) {
+                $cartDetail->cartDetails_quantity -= 1;
+            }
+            $cartDetail->save();
+        }
+        // Tính toán tổng tiền của sản phẩm (không cần lưu vào cơ sở dữ liệu)
+        $total = $cartDetail->cartDetails_quantity * $cartDetail->product->product_price;
+
+        // Cập nhật tổng giá tiền
+        $cartData = $this->getCartDetails($userId);
+        $totalPrice = $cartData['totalPrice'];
+        return [
+            'status' => 'success',
+            'quantity' => $cartDetail->cartDetails_quantity,
+            'total' => number_format($total, 0, ',', '.'),
+            'totalPrice' => number_format($totalPrice, 0, ',', '.')
+        ];
+       
     }
 }
